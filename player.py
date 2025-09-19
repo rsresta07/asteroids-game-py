@@ -1,15 +1,19 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED
 
 
 class Player(CircleShape):
-    def __init__(self, x: int, y: int):
+
+    def __init__(self, x: int, y: int, updatables, drawables):
         # call parent constructor with PLAYER_RADIUS
         super().__init__(x, y, PLAYER_RADIUS)
 
         # rotation field initialized to 0
         self.rotation = 0
+
+        updatables.append(self)
+        drawables.append(self)
 
     # triangle method you were given (paste exact math)
     def triangle(self):
@@ -34,3 +38,11 @@ class Player(CircleShape):
             self.rotate(-dt)
         if keys[pygame.K_d]:
             self.rotate(dt)
+        if keys[pygame.K_w]:
+            self.move(dt)
+        if keys[pygame.K_s]:
+            self.move(-dt)
+
+    def move(self, dt: float):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * dt

@@ -15,7 +15,10 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
-    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    updatables = []
+    drawables = []
+
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, updatables, drawables)
 
     running = True
     while running:
@@ -25,8 +28,12 @@ def main():
 
         dt = clock.tick(60) / 1000
         screen.fill((0, 0, 0))
-        player.update(dt)
-        player.draw(screen)
+
+        for obj in updatables:
+            obj.update(dt)
+        for obj in drawables:
+            obj.draw(screen)
+
         pygame.display.flip()
 
     pygame.quit()
